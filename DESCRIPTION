@@ -27,8 +27,7 @@ Imports:
     parsnip,
     tibble,
     MASS,
-    fda.usc,
-    clues
+    fda.usc
 Suggests: 
     recipes,
     testthat (>= 2.1.0),
