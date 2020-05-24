@@ -1,0 +1,43 @@
+Package: glasp
+Title: Group Linear Algorithm with Sparse Principal decomposition
+Version: 0.0.1.9000
+Authors@R: c(
+    person(given = "Juan C.",
+           family = "Laria",
+           role = c("aut", "cre"),
+           email = "juank.laria@gmail.com",
+           comment = c(ORCID = "https://orcid.org/0000-0001-7734-9647")),
+    person(given = "Rosa E.",
+           family = "Lillo",
+           role = c("ths")),
+    person(given = "M. Carmen",
+           family = "Aquilera-Morillo",
+           role = c("ths"))
+    )
+Description: Implements the the Group Linear Algorithm with Sparse Principal decomposition, an algorithm for supervised variable selection and clustering. Our approach extends the Sparse-Group Lasso regularization to calculate clusters as part of the model fit. Therefore, unlike Sparse-Group Lasso, our idea does not require prior specification of clusters between variables. To determine the clusters, we solve a particular case of sparse Singular Value Decomposition, with a regularization term that follows naturally from the Group Lasso penalty. Moreover, this paper proposes a unified implementation to deal with, but not limited to, linear regression, logistic regression, and proportional hazards models with right-censoring.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    hardhat,
+    rlang,
+    stats,
+    methods,
+    Rcpp (>= 1.0.3),
+    parsnip,
+    tibble,
+    MASS,
+    fda.usc,
+    clues
+Suggests: 
+    recipes,
+    testthat (>= 2.1.0),
+    dplyr,
+    ggplot2,
+    reshape2,
+    rsample,
+    tune,
+    yardstick
+LinkingTo: Rcpp, RcppArmadillo
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.0
