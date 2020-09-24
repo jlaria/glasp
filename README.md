@@ -4,11 +4,13 @@
 # Group Linear Algorithm with Sparse Principal decomposition <img src="man/figures/glasp.png" align="right" width="150" />
 
 > A variable selection and clustering method for generalized linear
-> models [![Travis build
-> status](https://travis-ci.com/jlaria/glasp.svg?branch=master)](https://travis-ci.com/jlaria/glasp)
-> [![](https://img.shields.io/github/languages/code-size/jlaria/glasp.svg)](https://github.com/jlaria/glasp)
-> [![](https://img.shields.io/github/last-commit/jlaria/glasp.svg)](https://github.com/jlaria/glasp/commits/master)
-> [![](https://img.shields.io/badge/devel%20version-0.0.1.9000-blue.svg)](https://github.com/jlaria/glasp)
+> models
+
+[![Travis build
+status](https://travis-ci.com/jlaria/glasp.svg?branch=master)](https://travis-ci.com/jlaria/glasp)
+[![](https://img.shields.io/github/languages/code-size/jlaria/glasp.svg)](https://github.com/jlaria/glasp)
+[![](https://img.shields.io/github/last-commit/jlaria/glasp.svg)](https://github.com/jlaria/glasp/commits/master)
+[![](https://img.shields.io/badge/devel%20version-0.0.1.9000-blue.svg)](https://github.com/jlaria/glasp)
 
 ## Overview
 
@@ -67,7 +69,7 @@ The coefficients can be accessed through the `parsnip` model object
 print(model)
 #> parsnip model object
 #> 
-#> Fit time:  49ms 
+#> Fit time:  67ms 
 #> <linear_regression> 
 #> $beta
 #>           X1           X2           X3           X4           X5           X6 
@@ -169,8 +171,18 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> 
 #> i Current best:      roc_auc=0.6096 (@iter 0)
 #> i Gaussian process model
+#> New names:
+#> * NA -> ...1
+#> * NA -> ...2
+#> * NA -> ...3
+#> * NA -> ...4
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
+#> New names:
+#> * NA -> ...1
+#> * NA -> ...2
+#> * NA -> ...3
+#> * NA -> ...4
 #> i Predicted candidates
 #> i l1=1.11e-06, l2=8.37, frob=3.84e-06, num_comp=8
 #> i Estimating performance
@@ -181,8 +193,18 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> 
 #> i Current best:      roc_auc=0.6096 (@iter 0)
 #> i Gaussian process model
+#> New names:
+#> * NA -> ...1
+#> * NA -> ...2
+#> * NA -> ...3
+#> * NA -> ...4
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
+#> New names:
+#> * NA -> ...1
+#> * NA -> ...2
+#> * NA -> ...3
+#> * NA -> ...4
 #> i Predicted candidates
 #> i l1=9.75, l2=6.7, frob=3.72e-06, num_comp=11
 #> i Estimating performance
@@ -193,8 +215,18 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> 
 #> i Current best:      roc_auc=0.6096 (@iter 0)
 #> i Gaussian process model
+#> New names:
+#> * NA -> ...1
+#> * NA -> ...2
+#> * NA -> ...3
+#> * NA -> ...4
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
+#> New names:
+#> * NA -> ...1
+#> * NA -> ...2
+#> * NA -> ...3
+#> * NA -> ...4
 #> i Predicted candidates
 #> i l1=0.000441, l2=1.08e-05, frob=0.000219, num_comp=11
 #> i Estimating performance
@@ -205,8 +237,18 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> 
 #> i Current best:      roc_auc=0.6112 (@iter 3)
 #> i Gaussian process model
+#> New names:
+#> * NA -> ...1
+#> * NA -> ...2
+#> * NA -> ...3
+#> * NA -> ...4
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
+#> New names:
+#> * NA -> ...1
+#> * NA -> ...2
+#> * NA -> ...3
+#> * NA -> ...4
 #> i Predicted candidates
 #> i l1=0.0474, l2=1.03e-06, frob=0.00435, num_comp=10
 #> i Estimating performance
@@ -217,8 +259,18 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> 
 #> i Current best:      roc_auc=0.6176 (@iter 4)
 #> i Gaussian process model
+#> New names:
+#> * NA -> ...1
+#> * NA -> ...2
+#> * NA -> ...3
+#> * NA -> ...4
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
+#> New names:
+#> * NA -> ...1
+#> * NA -> ...2
+#> * NA -> ...3
+#> * NA -> ...4
 #> i Predicted candidates
 #> i l1=8.36, l2=1.46e-06, frob=0.0192, num_comp=3
 #> i Estimating performance
@@ -229,8 +281,18 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> 
 #> i Current best:      roc_auc=0.6176 (@iter 4)
 #> i Gaussian process model
+#> New names:
+#> * NA -> ...1
+#> * NA -> ...2
+#> * NA -> ...3
+#> * NA -> ...4
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
+#> New names:
+#> * NA -> ...1
+#> * NA -> ...2
+#> * NA -> ...3
+#> * NA -> ...4
 #> i Predicted candidates
 #> i l1=5.25e-06, l2=3.66e-06, frob=6.4, num_comp=7
 #> i Estimating performance
@@ -241,8 +303,18 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> 
 #> i Current best:      roc_auc=0.6176 (@iter 4)
 #> i Gaussian process model
+#> New names:
+#> * NA -> ...1
+#> * NA -> ...2
+#> * NA -> ...3
+#> * NA -> ...4
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
+#> New names:
+#> * NA -> ...1
+#> * NA -> ...2
+#> * NA -> ...3
+#> * NA -> ...4
 #> i Predicted candidates
 #> i l1=0.00236, l2=0.00667, frob=0.000906, num_comp=15
 #> i Estimating performance
@@ -253,8 +325,18 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> 
 #> i Current best:      roc_auc=0.6233 (@iter 7)
 #> i Gaussian process model
+#> New names:
+#> * NA -> ...1
+#> * NA -> ...2
+#> * NA -> ...3
+#> * NA -> ...4
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
+#> New names:
+#> * NA -> ...1
+#> * NA -> ...2
+#> * NA -> ...3
+#> * NA -> ...4
 #> i Predicted candidates
 #> i l1=8.3e-05, l2=0.000221, frob=0.142, num_comp=15
 #> i Estimating performance
@@ -265,8 +347,18 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> 
 #> i Current best:      roc_auc=0.6233 (@iter 7)
 #> i Gaussian process model
+#> New names:
+#> * NA -> ...1
+#> * NA -> ...2
+#> * NA -> ...3
+#> * NA -> ...4
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
+#> New names:
+#> * NA -> ...1
+#> * NA -> ...2
+#> * NA -> ...3
+#> * NA -> ...4
 #> i Predicted candidates
 #> i l1=0.128, l2=0.361, frob=4.36e-06, num_comp=2
 #> i Estimating performance
@@ -277,8 +369,18 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> 
 #> i Current best:      roc_auc=0.6233 (@iter 7)
 #> i Gaussian process model
+#> New names:
+#> * NA -> ...1
+#> * NA -> ...2
+#> * NA -> ...3
+#> * NA -> ...4
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
+#> New names:
+#> * NA -> ...1
+#> * NA -> ...2
+#> * NA -> ...3
+#> * NA -> ...4
 #> i Predicted candidates
 #> i l1=9.48, l2=3.97e-06, frob=9.52, num_comp=15
 #> i Estimating performance
@@ -309,27 +411,8 @@ Optionally, it can be built using the following `Dockerfile`
     FROM r-base:3.6.3
     LABEL maintainer juank.laria@gmail.com
     
-    WORKDIR /root/
+    RUN apt-get update && apt-get install r-cran-dplyr r-cran-rcpparmadillo r-cran-mass r-cran-devtools r-cran-devtools r-cran-ggpubr -y
     
-    RUN apt-get update && apt-get install wget git r-cran-dplyr r-cran-rcpparmadillo r-cran-mass r-cran-devtools r-cran-devtools openjdk-8-jre r-cran-ggpubr -y  
-    
-    # Install clues (removed from cran these days)
-    RUN wget https://cran.r-project.org/src/contrib/Archive/clues/clues_0.6.2.2.tar.gz
-    RUN R CMD INSTALL clues_0.6.2.2.tar.gz
-    
-    # Install R dependencies and glasp
-    ADD install_glasp.R .
-    RUN Rscript install_glasp.R 
-    
-    # Install sparklyr
-    ADD install_spark.R .
-    RUN Rscript install_spark.R 
-    
-    RUN wget https://cran.r-project.org/src/contrib/mvtnorm_1.1-0.tar.gz
-    RUN R CMD INSTALL mvtnorm_1.1-0.tar.gz
-    
-    # Bring the experiments from the paper
-    ADD https://api.github.com/repos/jlaria/glasp-code/commits  /dev/null
-    RUN git clone https://github.com/jlaria/glasp-code.git && cd glasp-code
+    RUN Rscript -e 'devtools::install_github("jlaria/glasp")'
     
     CMD ["/bin/bash"]
