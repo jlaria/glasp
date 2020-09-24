@@ -7,7 +7,7 @@
 > models
 
 [![Travis build
-status](https://travis-ci.com/jlaria/glasp.svg?branch=master)](https://travis-ci.com/jlaria/glasp)
+status](https://travis-ci.org/jlaria/glasp.svg?branch=master)](https://travis-ci.org/jlaria/glasp)
 [![](https://img.shields.io/github/languages/code-size/jlaria/glasp.svg)](https://github.com/jlaria/glasp)
 [![](https://img.shields.io/github/last-commit/jlaria/glasp.svg)](https://github.com/jlaria/glasp/commits/master)
 [![](https://img.shields.io/badge/devel%20version-0.0.1.9000-blue.svg)](https://github.com/jlaria/glasp)
@@ -69,7 +69,7 @@ The coefficients can be accessed through the `parsnip` model object
 print(model)
 #> parsnip model object
 #> 
-#> Fit time:  67ms 
+#> Fit time:  57ms 
 #> <linear_regression> 
 #> $beta
 #>           X1           X2           X3           X4           X5           X6 
@@ -167,7 +167,7 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> 
 #> Optimizing roc_auc using the expected improvement
 #> 
-#> ── Iteration 1 ─────────────────────────────────────────────────────────────────────────────────────────────────
+#> ── Iteration 1 ───────────────────────────────────────────────────────────────────────────────────────────────────────────
 #> 
 #> i Current best:      roc_auc=0.6096 (@iter 0)
 #> i Gaussian process model
@@ -189,7 +189,7 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> ✓ Estimating performance
 #> ⓧ Newest results:    roc_auc=0.5976 (+/-0.0404)
 #> 
-#> ── Iteration 2 ─────────────────────────────────────────────────────────────────────────────────────────────────
+#> ── Iteration 2 ───────────────────────────────────────────────────────────────────────────────────────────────────────────
 #> 
 #> i Current best:      roc_auc=0.6096 (@iter 0)
 #> i Gaussian process model
@@ -211,7 +211,7 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> ✓ Estimating performance
 #> ⓧ Newest results:    roc_auc=0.5976 (+/-0.0404)
 #> 
-#> ── Iteration 3 ─────────────────────────────────────────────────────────────────────────────────────────────────
+#> ── Iteration 3 ───────────────────────────────────────────────────────────────────────────────────────────────────────────
 #> 
 #> i Current best:      roc_auc=0.6096 (@iter 0)
 #> i Gaussian process model
@@ -233,7 +233,7 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> ✓ Estimating performance
 #> ♥ Newest results:    roc_auc=0.6112 (+/-0.0586)
 #> 
-#> ── Iteration 4 ─────────────────────────────────────────────────────────────────────────────────────────────────
+#> ── Iteration 4 ───────────────────────────────────────────────────────────────────────────────────────────────────────────
 #> 
 #> i Current best:      roc_auc=0.6112 (@iter 3)
 #> i Gaussian process model
@@ -255,7 +255,7 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> ✓ Estimating performance
 #> ♥ Newest results:    roc_auc=0.6176 (+/-0.0505)
 #> 
-#> ── Iteration 5 ─────────────────────────────────────────────────────────────────────────────────────────────────
+#> ── Iteration 5 ───────────────────────────────────────────────────────────────────────────────────────────────────────────
 #> 
 #> i Current best:      roc_auc=0.6176 (@iter 4)
 #> i Gaussian process model
@@ -277,7 +277,7 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> ✓ Estimating performance
 #> ⓧ Newest results:    roc_auc=0.5976 (+/-0.0404)
 #> 
-#> ── Iteration 6 ─────────────────────────────────────────────────────────────────────────────────────────────────
+#> ── Iteration 6 ───────────────────────────────────────────────────────────────────────────────────────────────────────────
 #> 
 #> i Current best:      roc_auc=0.6176 (@iter 4)
 #> i Gaussian process model
@@ -299,7 +299,7 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> ✓ Estimating performance
 #> ⓧ Newest results:    roc_auc=0.5968 (+/-0.0399)
 #> 
-#> ── Iteration 7 ─────────────────────────────────────────────────────────────────────────────────────────────────
+#> ── Iteration 7 ───────────────────────────────────────────────────────────────────────────────────────────────────────────
 #> 
 #> i Current best:      roc_auc=0.6176 (@iter 4)
 #> i Gaussian process model
@@ -321,7 +321,7 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> ✓ Estimating performance
 #> ♥ Newest results:    roc_auc=0.6233 (+/-0.0578)
 #> 
-#> ── Iteration 8 ─────────────────────────────────────────────────────────────────────────────────────────────────
+#> ── Iteration 8 ───────────────────────────────────────────────────────────────────────────────────────────────────────────
 #> 
 #> i Current best:      roc_auc=0.6233 (@iter 7)
 #> i Gaussian process model
@@ -343,7 +343,7 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> ✓ Estimating performance
 #> ⓧ Newest results:    roc_auc=0.6056 (+/-0.0447)
 #> 
-#> ── Iteration 9 ─────────────────────────────────────────────────────────────────────────────────────────────────
+#> ── Iteration 9 ───────────────────────────────────────────────────────────────────────────────────────────────────────────
 #> 
 #> i Current best:      roc_auc=0.6233 (@iter 7)
 #> i Gaussian process model
@@ -365,7 +365,7 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> ✓ Estimating performance
 #> ⓧ Newest results:    roc_auc=0.5976 (+/-0.0404)
 #> 
-#> ── Iteration 10 ────────────────────────────────────────────────────────────────────────────────────────────────
+#> ── Iteration 10 ──────────────────────────────────────────────────────────────────────────────────────────────────────────
 #> 
 #> i Current best:      roc_auc=0.6233 (@iter 7)
 #> i Gaussian process model

@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 # Group Linear Algorithm with Sparse Principal decomposition <img src="man/figures/glasp.png" align="right" width="150" />
 > A variable selection and clustering method for generalized linear models
 
-[![Travis build status](https://travis-ci.com/jlaria/glasp.svg?branch=master)](https://travis-ci.com/jlaria/glasp)
+[![Travis build status](https://travis-ci.org/jlaria/glasp.svg?branch=master)](https://travis-ci.org/jlaria/glasp)
 `r badger::badge_code_size("jlaria/glasp")`
 `r badger::badge_last_commit("jlaria/glasp")`
 `r badger::badge_github_version("jlaria/glasp", "blue")`
