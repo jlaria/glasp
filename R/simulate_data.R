@@ -111,7 +111,7 @@ simulate_CEN_surv_data <- function(N = 100, p = 30, p_group = 10, true_p_group =
 #'
 #' @importFrom "fda.usc" "fdata"
 #' @importFrom "fda.usc" "int.simpson"
-#' @importFrom "clues" "adjustedRand"
+#' @importFrom "aricode" "ARI"
 #' @export
 error_summary_CEN_surv <- function(model, new_data){
   # 1 - beta error
@@ -125,9 +125,10 @@ error_summary_CEN_surv <- function(model, new_data){
   # 2 - cluster info
   non_zero_coef <- new_data$true_beta != 0
 
-  RI <- adjustedRand(new_data$true_clusters, model$clusters, randMethod="Rand")
-  RI_sup <- adjustedRand(new_data$true_clusters_supervised[non_zero_coef], model$clusters[non_zero_coef], randMethod = "Rand")
-
+#  RI <- adjustedRand(new_data$true_clusters, model$clusters, randMethod="Rand")
+  RI <- ARI(new_data$true_clusters, model$clusters)
+#  RI_sup <- adjustedRand(new_data$true_clusters_supervised[non_zero_coef], model$clusters[non_zero_coef], randMethod = "Rand")
+  RI_sup <- ARI(new_data$true_clusters_supervised[non_zero_coef], model$clusters[non_zero_coef])
   vi.dist <- vi_dist(new_data$true_clusters, model$clusters)
   vi.dist_sup <- vi_dist(new_data$true_clusters_supervised[non_zero_coef], model$clusters[non_zero_coef])
 

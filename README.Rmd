@@ -1,0 +1,162 @@
+--- 
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  out.width = "100%"
+)
+```
+
+
+# Group Linear Algorithm with Sparse Principal decomposition <img src="man/figures/glasp.png" align="right" width="150" />
+> A variable selection and clustering method for generalized linear models
+[![Travis build status](https://travis-ci.com/jlaria/glasp.svg?branch=master)](https://travis-ci.com/jlaria/glasp)
+`r badger::badge_code_size("jlaria/glasp")`
+`r badger::badge_last_commit("jlaria/glasp")`
+`r badger::badge_github_version("jlaria/glasp", "blue")`
+
+## Overview
+
+R package `glasp` is an extension of the Sparse Group Lasso that computes groups automatically. The internal supervised variable clustering algorithm is also an original contribution and integrates naturally within the Group Lasso penalty. 
+Moreover, this implementation provides the flexibility to change the risk function and address any regression problem.
+
+## Install
+
+To install `glasp` in R use
+
+```
+devtools::install_github("jlaria/glasp", dependencies = TRUE)
+```
+
+## Example
+
+### Linear regression
+
+In this example, we show how to integrate `glasp` with `parsnip` and other tidy libraries.
+
+We first load the required libraries.
+
+```{r}
+library(glasp)
+library(parsnip)
+library(yardstick)
+```
+
+Next, we simulate some linear data with the `simulate_dummy_linear_data` function.
+
+```{r}
+set.seed(0)
+data <- simulate_dummy_linear_data()
+```
+
+A `glasp` model can be computed using different approaches. This is the `parsnip` approach.
+
+```{r}
+model <- glasp_model(l1=0.01, l2=0.001, frob=0.0003) %>%
+    set_mode("regression") %>%
+    set_engine("glasp") %>%
+    fit(y~., data)
+```
+
+The coefficients can be accessed through the `parsnip` model object `model$fit$beta`.
+
+```{r}
+print(model)
+```
+
+Now we generate some out-of-sample data to check how the model predicts.
+
+```{r}
+set.seed(1)
+new_data <- simulate_dummy_linear_data()
+
+pred <- predict(model, new_data)
+rmse <- rmse_vec(new_data$y, pred$.pred)
+```
+
+We obtain a `r rmse` root mean square error.
+
+### Hyper-parameter selection
+
+Hyper-parameter search is quite easy using the tools `glasp` integrates with. To show this, we will simulate some survival data.
+
+```{r}
+set.seed(0)
+data <- simulate_dummy_surv_data()
+head(data)
+```
+
+We create the glasp model, but this time we do not fit it. Instead, we will call the `tune` function.
+
+```{r}
+library(tune)
+
+model <- glasp_model(l1 = tune(), 
+                     l2 = tune(),
+                     frob = tune(), 
+                     num_comp = tune()) %>%
+         set_mode("classification") %>% 
+         set_engine("glasp")
+```
+
+We specify k-fold cross validation and Bayesian optimization to search for hyper-parameters.
+
+```{r}
+library(rsample)
+data_rs <- vfold_cv(data, v = 4)
+
+hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the right hand side 
+                   resamples = data_rs,
+                   metrics = metric_set(roc_auc), # yardstick's roc_auc
+                   iter =10, # <- 10 iterations... change to 1000
+                   control = control_bayes(verbose = TRUE)) # 
+
+show_best(hist, metric = "roc_auc")
+```
+
+
+## Install in docker
+
+There is a docker image available with R 3.6.3 and all the dependencies of `glasp`.
+
+``` 
+docker pull jlaria/glasp:0.0.1
+docker run -it jlaria/glasp:0.0.1
+```
+
+Optionally, it can be built using the following `Dockerfile`
+
+```
+FROM r-base:3.6.3
+LABEL maintainer juank.laria@gmail.com
+
+WORKDIR /root/
+
+RUN apt-get update && apt-get install wget git r-cran-dplyr r-cran-rcpparmadillo r-cran-mass r-cran-devtools r-cran-devtools openjdk-8-jre r-cran-ggpubr -y  
+
+# Install clues (removed from cran these days)
+RUN wget https://cran.r-project.org/src/contrib/Archive/clues/clues_0.6.2.2.tar.gz
+RUN R CMD INSTALL clues_0.6.2.2.tar.gz
+
+# Install R dependencies and glasp
+ADD install_glasp.R .
+RUN Rscript install_glasp.R 
+
+# Install sparklyr
+ADD install_spark.R .
+RUN Rscript install_spark.R 
+
+RUN wget https://cran.r-project.org/src/contrib/mvtnorm_1.1-0.tar.gz
+RUN R CMD INSTALL mvtnorm_1.1-0.tar.gz
+
+# Bring the experiments from the paper
+ADD https://api.github.com/repos/jlaria/glasp-code/commits  /dev/null
+RUN git clone https://github.com/jlaria/glasp-code.git && cd glasp-code
+
+CMD ["/bin/bash"]
+```

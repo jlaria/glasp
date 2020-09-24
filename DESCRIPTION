@@ -28,7 +28,7 @@ Imports:
     tibble,
     MASS,
     fda.usc,
-    clues
+    aricode
 Suggests: 
     recipes,
     testthat (>= 2.1.0),

@@ -1,2 +1,5 @@
 ^glasp\.Rproj$
 ^\.Rproj\.user$
+^README\.Rmd$
+^man/figures/logo\.R$
+^\.travis\.yml$
