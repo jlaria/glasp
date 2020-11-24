@@ -82,6 +82,23 @@ rmse <- rmse_vec(new_data$y, pred$.pred)
 
 We obtain a `r rmse` root mean square error.
 
+### Logistic regression
+
+```{r}
+library(glasp)
+library(yardstick)
+
+set.seed(0)
+data <- simulate_dummy_logistic_data()
+model <- linear_classification(y~., data, l1=0.01, l2=0.001, frob=0.001, ncomp=2)
+print(model)
+
+pred = predict(model, data)
+
+accuracy_vec(data$y, factor(ifelse(pred[,2]>0.5, '1', '0')))
+```
+
+
 ### Hyper-parameter selection
 
 Hyper-parameter search is quite easy using the tools `glasp` integrates with. To show this, we will simulate some survival data.

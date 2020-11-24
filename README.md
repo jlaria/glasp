@@ -41,7 +41,7 @@ library(glasp)
 library(parsnip)
 library(yardstick)
 #> For binary classification, the first factor level is assumed to be the event.
-#> Set the global option `yardstick.event_first` to `FALSE` to change this.
+#> Use the argument `event_level = "second"` to alter this as needed.
 ```
 
 Next, we simulate some linear data with the `simulate_dummy_linear_data`
@@ -69,7 +69,7 @@ The coefficients can be accessed through the `parsnip` model object
 print(model)
 #> parsnip model object
 #> 
-#> Fit time:  57ms 
+#> Fit time:  54ms 
 #> <linear_regression> 
 #> $beta
 #>           X1           X2           X3           X4           X5           X6 
@@ -109,6 +109,53 @@ rmse <- rmse_vec(new_data$y, pred$.pred)
 ```
 
 We obtain a 1.518016 root mean square error.
+
+### Logistic regression
+
+``` r
+library(glasp)
+library(yardstick)
+
+set.seed(0)
+data <- simulate_dummy_logistic_data()
+model <- linear_classification(y~., data, l1=0.01, l2=0.001, frob=0.001, ncomp=2)
+print(model)
+#> <linear_classification> 
+#> $beta
+#>          X1          X2          X3          X4          X5          X6 
+#> -0.11955405  0.51302007 -0.13348146 -0.44563797 -1.13997627  0.10694531 
+#>          X7          X8          X9         X10 
+#>  0.07212035  0.02069272 -0.04030153  0.00000000 
+#> 
+#> $intercept
+#> [1] -0.01230225
+#> 
+#> $clusters
+#>  X1  X2  X3  X4  X5  X6  X7  X8  X9 X10 
+#>   1   1   1   1   0   1   1   1   1   1 
+#> 
+#> $info
+#> $info$l1
+#> [1] 0.01
+#> 
+#> $info$l2
+#> [1] 0.001
+#> 
+#> $info$frob
+#> [1] 0.001
+#> 
+#> $info$num_comp
+#> [1] 1
+#> 
+#> 
+#> $submodel
+#> [1] "logistic"
+
+pred = predict(model, data)
+
+accuracy_vec(data$y, factor(ifelse(pred[,2]>0.5, '1', '0')))
+#> [1] 0.79
+```
 
 ### Hyper-parameter selection
 
@@ -167,9 +214,9 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> 
 #> Optimizing roc_auc using the expected improvement
 #> 
-#> ── Iteration 1 ───────────────────────────────────────────────────────────────────────────────────────────────────────────
+#> ── Iteration 1 ─────────────────────────────────────────────────────────────────
 #> 
-#> i Current best:      roc_auc=0.6096 (@iter 0)
+#> i Current best:      roc_auc=0.4618 (@iter 0)
 #> i Gaussian process model
 #> New names:
 #> * NA -> ...1
@@ -187,11 +234,11 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> i l1=1.11e-06, l2=8.37, frob=3.84e-06, num_comp=8
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:    roc_auc=0.5976 (+/-0.0404)
+#> ⓧ Newest results:    roc_auc=0.4421 (+/-0.0608)
 #> 
-#> ── Iteration 2 ───────────────────────────────────────────────────────────────────────────────────────────────────────────
+#> ── Iteration 2 ─────────────────────────────────────────────────────────────────
 #> 
-#> i Current best:      roc_auc=0.6096 (@iter 0)
+#> i Current best:      roc_auc=0.4618 (@iter 0)
 #> i Gaussian process model
 #> New names:
 #> * NA -> ...1
@@ -206,14 +253,14 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> * NA -> ...3
 #> * NA -> ...4
 #> i Predicted candidates
-#> i l1=9.75, l2=6.7, frob=3.72e-06, num_comp=11
+#> i l1=9.97, l2=0.000758, frob=0.215, num_comp=17
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:    roc_auc=0.5976 (+/-0.0404)
+#> ⓧ Newest results:    roc_auc=0.4421 (+/-0.0608)
 #> 
-#> ── Iteration 3 ───────────────────────────────────────────────────────────────────────────────────────────────────────────
+#> ── Iteration 3 ─────────────────────────────────────────────────────────────────
 #> 
-#> i Current best:      roc_auc=0.6096 (@iter 0)
+#> i Current best:      roc_auc=0.4618 (@iter 0)
 #> i Gaussian process model
 #> New names:
 #> * NA -> ...1
@@ -228,14 +275,14 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> * NA -> ...3
 #> * NA -> ...4
 #> i Predicted candidates
-#> i l1=0.000441, l2=1.08e-05, frob=0.000219, num_comp=11
+#> i l1=0.0519, l2=0.00833, frob=0.0153, num_comp=14
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ♥ Newest results:    roc_auc=0.6112 (+/-0.0586)
+#> ⓧ Newest results:    roc_auc=0.4516 (+/-0.0782)
 #> 
-#> ── Iteration 4 ───────────────────────────────────────────────────────────────────────────────────────────────────────────
+#> ── Iteration 4 ─────────────────────────────────────────────────────────────────
 #> 
-#> i Current best:      roc_auc=0.6112 (@iter 3)
+#> i Current best:      roc_auc=0.4618 (@iter 0)
 #> i Gaussian process model
 #> New names:
 #> * NA -> ...1
@@ -250,14 +297,14 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> * NA -> ...3
 #> * NA -> ...4
 #> i Predicted candidates
-#> i l1=0.0474, l2=1.03e-06, frob=0.00435, num_comp=10
+#> i l1=0.000125, l2=2.25, frob=0.0229, num_comp=19
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ♥ Newest results:    roc_auc=0.6176 (+/-0.0505)
+#> ⓧ Newest results:    roc_auc=0.4421 (+/-0.0608)
 #> 
-#> ── Iteration 5 ───────────────────────────────────────────────────────────────────────────────────────────────────────────
+#> ── Iteration 5 ─────────────────────────────────────────────────────────────────
 #> 
-#> i Current best:      roc_auc=0.6176 (@iter 4)
+#> i Current best:      roc_auc=0.4618 (@iter 0)
 #> i Gaussian process model
 #> New names:
 #> * NA -> ...1
@@ -272,14 +319,14 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> * NA -> ...3
 #> * NA -> ...4
 #> i Predicted candidates
-#> i l1=8.36, l2=1.46e-06, frob=0.0192, num_comp=3
+#> i l1=0.286, l2=0.00878, frob=7.07e-06, num_comp=20
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:    roc_auc=0.5976 (+/-0.0404)
+#> ⓧ Newest results:    roc_auc=0.4445 (+/-0.0614)
 #> 
-#> ── Iteration 6 ───────────────────────────────────────────────────────────────────────────────────────────────────────────
+#> ── Iteration 6 ─────────────────────────────────────────────────────────────────
 #> 
-#> i Current best:      roc_auc=0.6176 (@iter 4)
+#> i Current best:      roc_auc=0.4618 (@iter 0)
 #> i Gaussian process model
 #> New names:
 #> * NA -> ...1
@@ -294,14 +341,14 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> * NA -> ...3
 #> * NA -> ...4
 #> i Predicted candidates
-#> i l1=5.25e-06, l2=3.66e-06, frob=6.4, num_comp=7
+#> i l1=1.96, l2=2.1, frob=0.00576, num_comp=3
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:    roc_auc=0.5968 (+/-0.0399)
+#> ⓧ Newest results:    roc_auc=0.4421 (+/-0.0608)
 #> 
-#> ── Iteration 7 ───────────────────────────────────────────────────────────────────────────────────────────────────────────
+#> ── Iteration 7 ─────────────────────────────────────────────────────────────────
 #> 
-#> i Current best:      roc_auc=0.6176 (@iter 4)
+#> i Current best:      roc_auc=0.4618 (@iter 0)
 #> i Gaussian process model
 #> New names:
 #> * NA -> ...1
@@ -316,14 +363,14 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> * NA -> ...3
 #> * NA -> ...4
 #> i Predicted candidates
-#> i l1=0.00236, l2=0.00667, frob=0.000906, num_comp=15
+#> i l1=1.01, l2=1.09e-06, frob=0.756, num_comp=11
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ♥ Newest results:    roc_auc=0.6233 (+/-0.0578)
+#> ⓧ Newest results:    roc_auc=0.4421 (+/-0.0608)
 #> 
-#> ── Iteration 8 ───────────────────────────────────────────────────────────────────────────────────────────────────────────
+#> ── Iteration 8 ─────────────────────────────────────────────────────────────────
 #> 
-#> i Current best:      roc_auc=0.6233 (@iter 7)
+#> i Current best:      roc_auc=0.4618 (@iter 0)
 #> i Gaussian process model
 #> New names:
 #> * NA -> ...1
@@ -338,14 +385,14 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> * NA -> ...3
 #> * NA -> ...4
 #> i Predicted candidates
-#> i l1=8.3e-05, l2=0.000221, frob=0.142, num_comp=15
+#> i l1=1.01e-06, l2=0.0149, frob=0.00118, num_comp=4
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:    roc_auc=0.6056 (+/-0.0447)
+#> ⓧ Newest results:    roc_auc=0.4278 (+/-0.0779)
 #> 
-#> ── Iteration 9 ───────────────────────────────────────────────────────────────────────────────────────────────────────────
+#> ── Iteration 9 ─────────────────────────────────────────────────────────────────
 #> 
-#> i Current best:      roc_auc=0.6233 (@iter 7)
+#> i Current best:      roc_auc=0.4618 (@iter 0)
 #> i Gaussian process model
 #> New names:
 #> * NA -> ...1
@@ -360,14 +407,14 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> * NA -> ...3
 #> * NA -> ...4
 #> i Predicted candidates
-#> i l1=0.128, l2=0.361, frob=4.36e-06, num_comp=2
+#> i l1=0.00242, l2=1.04e-06, frob=0.00152, num_comp=4
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:    roc_auc=0.5976 (+/-0.0404)
+#> ⓧ Newest results:    roc_auc=0.4406 (+/-0.0846)
 #> 
-#> ── Iteration 10 ──────────────────────────────────────────────────────────────────────────────────────────────────────────
+#> ── Iteration 10 ────────────────────────────────────────────────────────────────
 #> 
-#> i Current best:      roc_auc=0.6233 (@iter 7)
+#> i Current best:      roc_auc=0.4618 (@iter 0)
 #> i Gaussian process model
 #> New names:
 #> * NA -> ...1
@@ -382,20 +429,21 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> * NA -> ...3
 #> * NA -> ...4
 #> i Predicted candidates
-#> i l1=9.48, l2=3.97e-06, frob=9.52, num_comp=15
+#> i l1=1.01e-06, l2=0.000193, frob=0.0575, num_comp=16
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:    roc_auc=0.5976 (+/-0.0404)
+#> ⓧ Newest results:    roc_auc=0.4404 (+/-0.0685)
+#> ! No improvement for 10 iterations; returning current results.
 
 show_best(hist, metric = "roc_auc")
 #> # A tibble: 5 x 10
 #>         l1      l2    frob num_comp .iter .metric .estimator  mean     n std_err
 #>      <dbl>   <dbl>   <dbl>    <int> <dbl> <chr>   <chr>      <dbl> <int>   <dbl>
-#> 1  2.36e-3 6.67e-3 9.06e-4       15     7 roc_auc binary     0.623     4  0.0578
-#> 2  4.74e-2 1.03e-6 4.35e-3       10     4 roc_auc binary     0.618     4  0.0505
-#> 3  4.41e-4 1.08e-5 2.19e-4       11     3 roc_auc binary     0.611     4  0.0586
-#> 4  3.49e-4 5.49e-4 2.68e-5        7     0 roc_auc binary     0.610     4  0.0573
-#> 5  8.30e-5 2.21e-4 1.42e-1       15     8 roc_auc binary     0.606     4  0.0447
+#> 1  3.49e-4 5.49e-4 2.68e-5        7     0 roc_auc binary     0.462     4  0.0825
+#> 2  5.19e-2 8.33e-3 1.53e-2       14     3 roc_auc binary     0.452     4  0.0782
+#> 3  2.86e-1 8.78e-3 7.07e-6       20     5 roc_auc binary     0.445     4  0.0614
+#> 4  1.11e-6 8.37e+0 3.84e-6        8     1 roc_auc binary     0.442     4  0.0608
+#> 5  1.25e-4 2.25e+0 2.29e-2       19     4 roc_auc binary     0.442     4  0.0608
 ```
 
 ## Install in docker

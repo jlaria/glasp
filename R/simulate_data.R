@@ -17,6 +17,26 @@ simulate_dummy_linear_data <- function(N = 100, p = 10, nzc = 5){
   data <- data.frame(y = y, x)
 }
 
+#' Simulate toy logistic data for benchmark
+#'
+#' @param N Number of observations
+#' @param p Number of features
+#' @param nzc True number of features in the model
+#'
+#' @return An expanded data set
+#' @export
+#'
+#' @importFrom "stats" "rnorm" "rbinom"
+simulate_dummy_logistic_data <- function(N = 100, p = 10, nzc = 5){
+  x = matrix(rnorm(N * p), N, p)
+  beta = rnorm(nzc)
+  fx = x[, seq(nzc)] %*% beta
+  eta = fx + rnorm(N)
+  p = (1 + exp(-eta))^-1
+  y = rbinom(N, 1, p)
+  data <- data.frame(y = factor(y), x)
+}
+
 
 rmse_beta <- function(true, pred, Sigma){
   #sqrt(mean((true - pred)^2))

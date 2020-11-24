@@ -48,7 +48,9 @@ get_predict_function_classification <- function(type) {
   switch(
     type,
     prob_survival = predict_linear_classification_prob_survival,
-    numeric_survival = predict_linear_classification_numeric_survival
+    numeric_survival = predict_linear_classification_numeric_survival,
+    prob_logistic = predict_linear_classification_prob_logistic,
+    numeric_logistic = predict_linear_classification_numeric_logistic
   )
 }
 
@@ -83,4 +85,19 @@ predict_linear_classification_numeric_survival <- function(model, predictors) {
   X <- as.matrix(predictors)
 
   as.numeric(X%*%model$beta + model$intercept)
+}
+
+predict_linear_classification_numeric_logistic <- function(model, predictors) {
+  X <- as.matrix(predictors)
+  as.numeric(X%*%model$beta + model$intercept)
+}
+
+predict_linear_classification_prob_logistic <- function(model, predictors) {
+  X <- as.matrix(predictors)
+  eta <- as.numeric(X%*%model$beta + model$intercept)
+
+  pred <- as.numeric((1+exp(-eta))^-1)
+  predictions <-  cbind(1-pred, pred)
+  colnames(predictions) <- c("0", "1")
+  return(predictions)
 }
