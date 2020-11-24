@@ -24,7 +24,7 @@ Imports:
     stats,
     methods,
     Rcpp (>= 1.0.3),
-    parsnip,
+    parsnip (== 0.1.3),
     tibble,
     MASS,
     fda.usc,
@@ -36,7 +36,7 @@ Suggests:
     ggplot2,
     reshape2,
     rsample,
-    tune,
+    tune (== 0.1.0),
     yardstick
 LinkingTo: Rcpp, RcppArmadillo
 Roxygen: list(markdown = TRUE)

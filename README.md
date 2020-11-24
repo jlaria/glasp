@@ -110,53 +110,6 @@ rmse <- rmse_vec(new_data$y, pred$.pred)
 
 We obtain a 1.518016 root mean square error.
 
-### Logistic regression
-
-``` r
-library(glasp)
-library(yardstick)
-
-set.seed(0)
-data <- simulate_dummy_logistic_data()
-model <- linear_classification(y~., data, l1=0.01, l2=0.001, frob=0.001, ncomp=2)
-print(model)
-#> <linear_classification> 
-#> $beta
-#>          X1          X2          X3          X4          X5          X6 
-#> -0.11955405  0.51302007 -0.13348146 -0.44563797 -1.13997627  0.10694531 
-#>          X7          X8          X9         X10 
-#>  0.07212035  0.02069272 -0.04030153  0.00000000 
-#> 
-#> $intercept
-#> [1] -0.01230225
-#> 
-#> $clusters
-#>  X1  X2  X3  X4  X5  X6  X7  X8  X9 X10 
-#>   1   1   1   1   0   1   1   1   1   1 
-#> 
-#> $info
-#> $info$l1
-#> [1] 0.01
-#> 
-#> $info$l2
-#> [1] 0.001
-#> 
-#> $info$frob
-#> [1] 0.001
-#> 
-#> $info$num_comp
-#> [1] 1
-#> 
-#> 
-#> $submodel
-#> [1] "logistic"
-
-pred = predict(model, data)
-
-accuracy_vec(data$y, factor(ifelse(pred[,2]>0.5, '1', '0')))
-#> [1] 0.79
-```
-
 ### Hyper-parameter selection
 
 Hyper-parameter search is quite easy using the tools `glasp` integrates
@@ -201,6 +154,7 @@ for hyper-parameters.
 
 ``` r
 library(rsample)
+
 data_rs <- vfold_cv(data, v = 4)
 
 hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the right hand side 
@@ -444,6 +398,84 @@ show_best(hist, metric = "roc_auc")
 #> 3  2.86e-1 8.78e-3 7.07e-6       20     5 roc_auc binary     0.445     4  0.0614
 #> 4  1.11e-6 8.37e+0 3.84e-6        8     1 roc_auc binary     0.442     4  0.0608
 #> 5  1.25e-4 2.25e+0 2.29e-2       19     4 roc_auc binary     0.442     4  0.0608
+```
+
+### Logistic regression
+
+``` r
+library(glasp)
+library(yardstick)
+
+set.seed(0)
+data <- simulate_dummy_logistic_data()
+model <- linear_classification(y~., data, l1=0.01, l2=0.001, frob=0.001, ncomp=2)
+print(model)
+#> <linear_classification> 
+#> $beta
+#>          X1          X2          X3          X4          X5          X6 
+#> -0.11955405  0.51302007 -0.13348146 -0.44563797 -1.13997627  0.10694531 
+#>          X7          X8          X9         X10 
+#>  0.07212035  0.02069272 -0.04030153  0.00000000 
+#> 
+#> $intercept
+#> [1] -0.01230225
+#> 
+#> $clusters
+#>  X1  X2  X3  X4  X5  X6  X7  X8  X9 X10 
+#>   1   1   1   1   0   1   1   1   1   1 
+#> 
+#> $info
+#> $info$l1
+#> [1] 0.01
+#> 
+#> $info$l2
+#> [1] 0.001
+#> 
+#> $info$frob
+#> [1] 0.001
+#> 
+#> $info$num_comp
+#> [1] 1
+#> 
+#> 
+#> $submodel
+#> [1] "logistic"
+
+pred = predict(model, data)
+
+accuracy_vec(data$y, factor(ifelse(pred[,2]>0.5, '1', '0')))
+#> [1] 0.79
+```
+
+``` r
+library(rsample)
+
+set.seed(0)
+data <- simulate_dummy_logistic_data()
+
+model <- glasp_model(l1 = tune(), 
+                     l2 = tune(),
+                     frob = tune(), 
+                     num_comp = tune()) %>%
+         set_mode("classification") %>% 
+         set_engine("glasp")
+
+data_rs <- vfold_cv(data, v = 4)
+
+hist <- tune_grid(model, y~., 
+                   resamples = data_rs,
+                   metrics = metric_set(roc_auc), 
+                   grid =10, 
+                   control = control_grid(verbose = FALSE)) # 
+show_best(hist, metric = "roc_auc")
+#> # A tibble: 5 x 9
+#>           l1        l2      frob num_comp .metric .estimator  mean     n std_err
+#>        <dbl>     <dbl>     <dbl>    <int> <chr>   <chr>      <dbl> <int>   <dbl>
+#> 1 0.000520     8.41e-3   7.01e-4       17 roc_auc binary     0.865     4  0.0214
+#> 2 0.0161       9.98e-4   1.84e-4       19 roc_auc binary     0.862     4  0.0237
+#> 3 0.00000192   3.27e-6   1.69e-6       10 roc_auc binary     0.860     4  0.0255
+#> 4 0.0000258    3.12e-2   7.34e-6       12 roc_auc binary     0.859     4  0.0237
+#> 5 0.00795      5.99e-6   1.88e-2       15 roc_auc binary     0.851     4  0.0212
 ```
 
 ## Install in docker
