@@ -1,6 +1,6 @@
 Package: glasp
 Title: Group Linear Algorithm with Sparse Principal decomposition
-Version: 0.0.1.9000
+Version: 0.0.2.9000
 Authors@R: c(
     person(given = "Juan C.",
            family = "Laria",
@@ -26,18 +26,17 @@ Imports:
     Rcpp (>= 1.0.3),
     parsnip,
     tibble,
-    MASS,
-    fda.usc,
-    aricode
+    MASS
 Suggests: 
     recipes,
-    testthat (>= 2.1.0),
+    testthat (>= 3.0.0),
     dplyr,
     ggplot2,
     reshape2,
     rsample,
-    tune (<= 0.1.0),
+    tune,
     yardstick
 LinkingTo: Rcpp, RcppArmadillo
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
+Config/testthat/edition: 3

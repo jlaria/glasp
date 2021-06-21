@@ -55,19 +55,13 @@ A \code{linear_regression} object.
 \code{linear_regression()} fits a model.
 }
 \examples{
-predictors <- mtcars[, -1]
-outcome <- mtcars[, 1]
+set.seed(0)
+data <- simulate_dummy_linear_data()
 
-# XY interface
-mod <- linear_regression(predictors, outcome)
+model <- linear_regression(y~., data, l1=0.05, l2=0.01, frob=0.01, num_comp=3)
+model
 
-# Formula interface
-mod2 <- linear_regression(mpg ~ ., mtcars)
+new_data <- simulate_dummy_linear_data()
 
-# Recipes interface
-library(recipes)
-rec <- recipe(mpg ~ ., mtcars)
-rec <- step_log(rec, disp)
-mod3 <- linear_regression(rec, mtcars)
-
+predict(model, new_data, type = "numeric")
 }

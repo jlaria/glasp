@@ -17,23 +17,23 @@
 #' to be the same as the number of rows in `new_data`.
 #'
 #' @examples
-#' train <- mtcars[1:20,]
-#' test <- mtcars[21:32, -1]
+#' set.seed(0)
+#' data <- simulate_dummy_linear_data()
 #'
-#' # Fit
-#' mod <- linear_regression(mpg ~ cyl + log(drat), train)
+#' model <- linear_regression(y~., data, l1=0.05, l2=0.01, frob=0.01, num_comp=3)
 #'
-#' # Predict, with preprocessing
-#' predict(mod, test)
+#' new_data <- simulate_dummy_linear_data()
+#'
+#' predict(model, new_data, type = "numeric")
 #'
 #' @export
 predict.linear_regression <- function(object, new_data, type = "numeric", ...) {
   forged <- hardhat::forge(new_data, object$blueprint)
-  rlang::arg_match(type, valid_predict_types())
+  rlang::arg_match(type, valid_linear_regression_predict_types())
   predict_linear_regression_bridge(type, object, forged$predictors)
 }
 
-valid_predict_types <- function() {
+valid_linear_regression_predict_types <- function() {
   c("numeric")
 }
 
@@ -41,9 +41,9 @@ valid_predict_types <- function() {
 # Bridge
 
 predict_linear_regression_bridge <- function(type, model, predictors) {
-  predictors <- as.matrix(predictors)
+  #predictors <- as.matrix(predictors)
 
-  predict_function <- get_predict_function(type)
+  predict_function <- get_linear_regression_predict_function(type)
   predictions <- predict_function(model, predictors)
 
   hardhat::validate_prediction_size(predictions, predictors)
@@ -51,7 +51,7 @@ predict_linear_regression_bridge <- function(type, model, predictors) {
   predictions
 }
 
-get_predict_function <- function(type) {
+get_linear_regression_predict_function <- function(type) {
   switch(
     type,
     numeric = predict_linear_regression_numeric
@@ -62,6 +62,9 @@ get_predict_function <- function(type) {
 # Implementation
 
 predict_linear_regression_numeric <- function(model, predictors) {
-  predictors <- as.matrix(predictors)
-  predictions <- as.numeric(predictors %*% model$beta + model$intercept)
+  X <- as.matrix(predictors)
+  eta <- as.numeric(X%*%model$model$beta + model$model$intercept)
+
+  #hardhat::spruce_numeric(as.numeric((1+exp(-eta))^-1))
+  return (as.numeric(eta))
 }

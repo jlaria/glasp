@@ -12,5 +12,12 @@
 
 #'@import methods Rcpp
 #'@useDynLib glasp, .registration=TRUE
-loadModule("Rcpp_glasp_export", TRUE)
 
+loadModule("Rcpp_glasp_export", TRUE)
+#a <- function(){print('hello')}
+
+.onLoad <- function(libname, pkgname){
+  register_glasp_classification()
+  register_glasp_regression()
+  register_glasp_cox()
+}

@@ -87,6 +87,9 @@ private:
     // Null model's objective
     double obj_null;
 
+    // history
+    arma::vec history;
+
     void update_svds(const arma::vec & eta_times_u, const arma::vec & beta, arma::vec & v, double gamma, double C_b, double C_v);
     void update_grp_order();
     void reorder_grp();
@@ -194,6 +197,7 @@ public:
       return grp_index;
     }
     arma::uvec get_ord(){return ord;}
+    arma::vec get_history(){return history;}
 };
 
 /* Constructor */
@@ -239,7 +243,9 @@ glasp::glasp(const Rcpp::List glaspData, int loss)
 
     update_grp_order();
 
-    double obj_null = objective();
+    obj_null = objective();
+    history = arma::zeros(GLASP_MAX_ITER);
+
     // Compute intercept... or not
     arma::uvec y_ord;
     switch (loss)
@@ -294,8 +300,11 @@ void glasp::glasp_optimization(const arma::vec & params){
 
     double obj_new;
     double obj_old = objective();
+
+
     //printf("initial objective %f\n", obj_old);
-    for (int iter = 0; iter < GLASP_MAX_ITER; iter++){
+    int iter;
+    for (iter = 0; iter < GLASP_MAX_ITER; iter++){
       // Compute groups
       if (lambda3 > 0)
       {
@@ -310,6 +319,8 @@ void glasp::glasp_optimization(const arma::vec & params){
       //printf("objective %f\n", obj_new);
       //beta.print("beta");
 
+      history[iter] = (obj_old - obj_new)/obj_null;
+
       if(obj_old - obj_new < FISTA_TOL*obj_null){
         //printf("Exiting main loop because %f < %f\n", obj_old - obj_new, FISTA_TOL*obj_null);
         break;
@@ -318,6 +329,7 @@ void glasp::glasp_optimization(const arma::vec & params){
     }
     //ord.print("ord");
     reorder_grp();
+    history = history.head(iter + 1);
 }
 
 void glasp::optimization_external(){
@@ -502,7 +514,7 @@ void glasp::glasp_subproblem2(){
       beta_n(p_Eta_n++) = beta(i);
     }
   }
-  // There is an exception (is it?) is the number of desired groups exceeds the number of columns of Eta_n
+  // There is an exception (is it?) if the number of desired groups exceeds the number of columns of Eta_n
 
   // 2 - Define the left and right singular vector matrices, as well as W, T
 
@@ -540,7 +552,7 @@ void glasp::glasp_subproblem2(){
       {
         u = u/arma::norm(u, 2);
       }
-    } while (arma::approx_equal(v_old, v, "absdiff", FISTA_TOL) && ++iter < MAX_ITER_OPT);
+    } while (!arma::approx_equal(v_old, v, "absdiff", FISTA_TOL) && ++iter < MAX_ITER_OPT);
 
     double norm = arma::norm(v, 2);
     if(norm > 0){
@@ -732,6 +744,7 @@ RCPP_MODULE(Rcpp_glasp_export){
     .property("beta", &glasp::get_beta)
     .property("intercept", &glasp::get_intercept)
     .property("clusters", &glasp::get_clusters)
+    .property("history", &glasp::get_history)
     ;
 }
 

@@ -25,26 +25,22 @@
 #'
 #' @param ... Not currently used, but required for extensibility.
 #'
+#'
 #' @return
 #'
 #' A `linear_regression` object.
 #'
 #' @examples
-#' predictors <- mtcars[, -1]
-#' outcome <- mtcars[, 1]
+#' set.seed(0)
+#' data <- simulate_dummy_linear_data()
 #'
-#' # XY interface
-#' mod <- linear_regression(predictors, outcome)
+#' model <- linear_regression(y~., data, l1=0.05, l2=0.01, frob=0.01, num_comp=3)
+#' model
 #'
-#' # Formula interface
-#' mod2 <- linear_regression(mpg ~ ., mtcars)
+#' new_data <- simulate_dummy_linear_data()
 #'
-#' # Recipes interface
-#' library(recipes)
-#' rec <- recipe(mpg ~ ., mtcars)
-#' rec <- step_log(rec, disp)
-#' mod3 <- linear_regression(rec, mtcars)
-#'
+#' predict(model, new_data, type = "numeric")
+
 #' @export
 linear_regression <- function(x, ...) {
   UseMethod("linear_regression")
@@ -95,37 +91,20 @@ linear_regression.recipe <- function(x, data, ...) {
 # ------------------------------------------------------------------------------
 # Bridge
 
-linear_regression_bridge <- function(processed, l1 = 0, l2 = 0, frob = 0, num_comp = 1, ...) {
+linear_regression_bridge <- function(processed, l1=0, l2=0, frob=0, num_comp=1, ...) {
   predictors <- processed$predictors
+  #outcome <- processed$outcomes[[1]]
   outcome <- processed$outcomes
 
-  # Validation
+
   hardhat::validate_predictors_are_numeric(predictors)
-  hardhat::validate_outcomes_are_numeric(outcome)
   hardhat::validate_outcomes_are_univariate(outcome)
+  hardhat::validate_outcomes_are_numeric(outcome)
 
-  # check for NAs
-  if(any(is.na(predictors)) | any(is.na(outcome))){
-    stop("NA's are not supported")
-  }
-
-  fit <- linear_regression_impl(predictors, outcome, l1, l2, frob, num_comp)
-  clusters = as.numeric(fit$clusters)
-  names(clusters) = colnames(predictors)
-
-  beta = as.numeric(fit$beta)
-  names(beta) = colnames(predictors)
-
-  info = list(l1 = l1,
-              l2 = l2,
-              frob = frob,
-              num_comp = num_comp)
+  model <- linear_regression_impl(predictors, outcome, l1, l2, frob, num_comp)
 
   new_linear_regression(
-    beta = beta,
-    intercept = fit$intercept,
-    clusters = clusters,
-    info = info,
+    model = model,
     blueprint = processed$blueprint
   )
 }
@@ -137,8 +116,27 @@ linear_regression_bridge <- function(processed, l1 = 0, l2 = 0, frob = 0, num_co
 linear_regression_impl <- function(predictors, outcome, l1, l2, frob, num_comp) {
 
   dat <- list(X = as.matrix(predictors), y = as.matrix(outcome))
-  obj <- new(glasp, dat, 0) # linear regression
+  obj <- new(glasp, dat, 0) # linear
   obj$fit(c(l1, l2, frob, num_comp))
 
-  return(obj)
+  beta <- as.numeric(obj$beta)
+  names(beta) <- colnames(predictors)
+
+  clusters = as.numeric(obj$clusters)
+  names(clusters) = colnames(predictors)
+
+
+  return(
+    list(
+      beta = beta,
+      intercept = obj$intercept,
+      clusters = clusters,
+      info = list(
+        l1 = l1,
+        l2 = l2,
+        frob = frob,
+        num_comp = num_comp
+      ))
+  )
 }
+

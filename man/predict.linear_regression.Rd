@@ -27,13 +27,13 @@ to be the same as the number of rows in \code{new_data}.
 Predict from a \code{linear_regression}
 }
 \examples{
-train <- mtcars[1:20,]
-test <- mtcars[21:32, -1]
+set.seed(0)
+data <- simulate_dummy_linear_data()
 
-# Fit
-mod <- linear_regression(mpg ~ cyl + log(drat), train)
+model <- linear_regression(y~., data, l1=0.05, l2=0.01, frob=0.01, num_comp=3)
 
-# Predict, with preprocessing
-predict(mod, test)
+new_data <- simulate_dummy_linear_data()
+
+predict(model, new_data, type = "numeric")
 
 }
