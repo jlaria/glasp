@@ -16,10 +16,7 @@ knitr::opts_chunk$set(
 # Group Linear Algorithm with Sparse Principal decomposition <img src="man/figures/glasp.png" align="right" width="150" />
 > A variable selection and clustering method for generalized linear models
 
-[![Travis build status](https://travis-ci.org/jlaria/glasp.svg?branch=master)](https://travis-ci.org/jlaria/glasp)
-`r badger::badge_code_size("jlaria/glasp")`
-`r badger::badge_last_commit("jlaria/glasp")`
-`r badger::badge_github_version("jlaria/glasp", "blue")`
+
 
 ## Overview
 
@@ -58,8 +55,7 @@ data <- simulate_dummy_linear_data()
 A `glasp` model can be computed using different approaches. This is the `parsnip` approach.
 
 ```{r}
-model <- glasp_model(l1=0.01, l2=0.001, frob=0.0003) %>%
-    set_mode("regression") %>%
+model <- glasp_regression(l1=0.01, l2=0.001, frob=0.0003) %>%
     set_engine("glasp") %>%
     fit(y~., data)
 ```
@@ -97,11 +93,10 @@ We create the glasp model, but this time we do not fit it. Instead, we will call
 ```{r}
 library(tune)
 
-model <- glasp_model(l1 = tune(), 
+model <- glasp_cox(l1 = tune(), 
                      l2 = tune(),
                      frob = tune(), 
                      num_comp = tune()) %>%
-         set_mode("classification") %>% 
          set_engine("glasp")
 ```
 
@@ -129,12 +124,10 @@ library(yardstick)
 
 set.seed(0)
 data <- simulate_dummy_logistic_data()
-model <- linear_classification(y~., data, l1=0.01, l2=0.001, frob=0.001, ncomp=2)
+model <- logistic_regression(y~., data, l1=0.01, l2=0.001, frob=0.001, ncomp=2)
 print(model)
 
 pred = predict(model, data)
-
-accuracy_vec(data$y, factor(ifelse(pred[,2]>0.5, '1', '0')))
 ```
 
 ```{r}
@@ -143,11 +136,10 @@ library(rsample)
 set.seed(0)
 data <- simulate_dummy_logistic_data()
 
-model <- glasp_model(l1 = tune(), 
+model <- glasp_classification(l1 = tune(), 
                      l2 = tune(),
                      frob = tune(), 
                      num_comp = tune()) %>%
-         set_mode("classification") %>% 
          set_engine("glasp")
 
 data_rs <- vfold_cv(data, v = 4)
@@ -162,22 +154,4 @@ show_best(hist, metric = "roc_auc")
 
 ## Install in docker
 
-There is a docker image available with R 3.6.3 and all the dependencies of `glasp`.
-
-``` 
-docker pull jlaria/glasp:0.0.1
-docker run -it jlaria/glasp:0.0.1
-```
-
-Optionally, it can be built using the following `Dockerfile`
-
-```
-FROM r-base:3.6.3
-LABEL maintainer juank.laria@gmail.com
-
-RUN apt-get update && apt-get install r-cran-dplyr r-cran-rcpparmadillo r-cran-mass r-cran-devtools r-cran-devtools r-cran-ggpubr -y
-
-RUN Rscript -e 'devtools::install_github("jlaria/glasp")'
-
-CMD ["/bin/bash"]
-```
+See `inst/rstudio`
