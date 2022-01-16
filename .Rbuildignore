@@ -3,3 +3,5 @@
 ^README\.Rmd$
 ^man/figures/logo\.R$
 ^\.travis\.yml$
+^docker-compose\.yml$
+^\.devcontainer$
