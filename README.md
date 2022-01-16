@@ -1,4 +1,9 @@
 
+<!-- badges: start -->
+
+[![R-CMD-check](https://github.com/jlaria/glasp/workflows/R-CMD-check/badge.svg)](https://github.com/jlaria/glasp/actions)
+<!-- badges: end -->
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # Group Linear Algorithm with Sparse Principal decomposition <img src="man/figures/glasp.png" align="right" width="150" />
@@ -62,7 +67,7 @@ The coefficients can be accessed through the `parsnip` model object
 print(model)
 #> parsnip model object
 #> 
-#> Fit time:  24ms 
+#> Fit time:  25ms 
 #> <linear_regression> 
 #> $model
 #> $model$beta
