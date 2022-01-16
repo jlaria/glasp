@@ -1,4 +1,9 @@
 
+<!-- badges: start -->
+
+[![R-CMD-check](https://github.com/jlaria/glasp/workflows/R-CMD-check/badge.svg)](https://github.com/jlaria/glasp/actions)
+<!-- badges: end -->
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # Group Linear Algorithm with Sparse Principal decomposition <img src="man/figures/glasp.png" align="right" width="150" />
@@ -62,7 +67,7 @@ The coefficients can be accessed through the `parsnip` model object
 print(model)
 #> parsnip model object
 #> 
-#> Fit time:  33ms 
+#> Fit time:  25ms 
 #> <linear_regression> 
 #> $model
 #> $model$beta
@@ -134,6 +139,9 @@ will call the `tune` function.
 
 ``` r
 library(tune)
+#> Registered S3 method overwritten by 'tune':
+#>   method                   from   
+#>   required_pkgs.model_spec parsnip
 
 model <- glasp_cox(l1 = tune(), 
                      l2 = tune(),
@@ -170,128 +178,128 @@ hist <- tune_bayes(model, event~time+., # <- Notice the syntax with time in the 
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
-#> i l1=5.9e-06, l2=1.84e-06, frob=9.45, num_comp=7
+#> i l1=6.17e-06, l2=1.88e-06, frob=0.00377, num_comp=9
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ♥ Newest results:    roc_auc=0.5587 (+/-0.0599)
+#> ♥ Newest results:    roc_auc=0.5606 (+/-0.0787)
 #> 
 #> ── Iteration 2 ─────────────────────────────────────────────────────────────────
 #> 
-#> i Current best:      roc_auc=0.5587 (@iter 1)
+#> i Current best:      roc_auc=0.5606 (@iter 1)
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
-#> i l1=7.96e-05, l2=1.07e-06, frob=0.00269, num_comp=4
+#> i l1=2.55, l2=3.57, frob=0.0911, num_comp=17
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ♥ Newest results:    roc_auc=0.5618 (+/-0.0784)
+#> ⓧ Newest results:    roc_auc=0.5579 (+/-0.0608)
 #> 
 #> ── Iteration 3 ─────────────────────────────────────────────────────────────────
 #> 
-#> i Current best:      roc_auc=0.5618 (@iter 2)
+#> i Current best:      roc_auc=0.5606 (@iter 1)
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
-#> i l1=0.0089, l2=1e-06, frob=0.000831, num_comp=6
+#> i l1=0.00564, l2=0.000567, frob=9.93, num_comp=18
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:    roc_auc=0.5598 (+/-0.085)
+#> ⓧ Newest results:    roc_auc=0.5587 (+/-0.0599)
 #> 
 #> ── Iteration 4 ─────────────────────────────────────────────────────────────────
 #> 
-#> i Current best:      roc_auc=0.5618 (@iter 2)
+#> i Current best:      roc_auc=0.5606 (@iter 1)
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
-#> i l1=9.95, l2=0.572, frob=1.53, num_comp=10
+#> i l1=0.000125, l2=2.25, frob=0.0229, num_comp=19
 #> i Estimating performance
 #> ✓ Estimating performance
 #> ⓧ Newest results:    roc_auc=0.5579 (+/-0.0608)
 #> 
 #> ── Iteration 5 ─────────────────────────────────────────────────────────────────
 #> 
-#> i Current best:      roc_auc=0.5618 (@iter 2)
+#> i Current best:      roc_auc=0.5606 (@iter 1)
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
-#> i l1=0.105, l2=0.511, frob=3.18e-06, num_comp=4
+#> i l1=0.0128, l2=3.38e-06, frob=0.0265, num_comp=7
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:    roc_auc=0.5579 (+/-0.0608)
+#> ⓧ Newest results:    roc_auc=0.548 (+/-0.0737)
 #> 
 #> ── Iteration 6 ─────────────────────────────────────────────────────────────────
 #> 
-#> i Current best:      roc_auc=0.5618 (@iter 2)
+#> i Current best:      roc_auc=0.5606 (@iter 1)
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
-#> i l1=0.000432, l2=5.01, frob=2.29, num_comp=4
+#> i l1=0.0497, l2=0.000154, frob=4.47, num_comp=9
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:    roc_auc=0.5579 (+/-0.0608)
+#> ⓧ Newest results:    roc_auc=0.5603 (+/-0.0602)
 #> 
 #> ── Iteration 7 ─────────────────────────────────────────────────────────────────
 #> 
-#> i Current best:      roc_auc=0.5618 (@iter 2)
+#> i Current best:      roc_auc=0.5606 (@iter 1)
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
-#> i l1=0.614, l2=1.59, frob=9.66, num_comp=6
+#> i l1=8.6e-06, l2=3.57, frob=1.12e-06, num_comp=10
 #> i Estimating performance
 #> ✓ Estimating performance
 #> ⓧ Newest results:    roc_auc=0.5579 (+/-0.0608)
 #> 
 #> ── Iteration 8 ─────────────────────────────────────────────────────────────────
 #> 
-#> i Current best:      roc_auc=0.5618 (@iter 2)
+#> i Current best:      roc_auc=0.5606 (@iter 1)
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
-#> i l1=9.03, l2=0.0107, frob=2.19e-06, num_comp=8
+#> i l1=0.018, l2=4.1e-05, frob=3.7, num_comp=4
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:    roc_auc=0.5579 (+/-0.0608)
+#> ⓧ Newest results:    roc_auc=0.5587 (+/-0.0606)
 #> 
 #> ── Iteration 9 ─────────────────────────────────────────────────────────────────
 #> 
-#> i Current best:      roc_auc=0.5618 (@iter 2)
+#> i Current best:      roc_auc=0.5606 (@iter 1)
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
-#> i l1=7.64, l2=2.4e-05, frob=1.67, num_comp=17
+#> i l1=3.55, l2=2.04e-06, frob=6.97e-06, num_comp=4
 #> i Estimating performance
 #> ✓ Estimating performance
 #> ⓧ Newest results:    roc_auc=0.5579 (+/-0.0608)
 #> 
 #> ── Iteration 10 ────────────────────────────────────────────────────────────────
 #> 
-#> i Current best:      roc_auc=0.5618 (@iter 2)
+#> i Current best:      roc_auc=0.5606 (@iter 1)
 #> i Gaussian process model
 #> ✓ Gaussian process model
 #> i Generating 5000 candidates
 #> i Predicted candidates
-#> i l1=4.62e-05, l2=1.21e-05, frob=0.00479, num_comp=4
+#> i l1=0.000668, l2=5.35e-06, frob=4.39e-06, num_comp=10
 #> i Estimating performance
 #> ✓ Estimating performance
-#> ⓧ Newest results:    roc_auc=0.5541 (+/-0.073)
+#> ⓧ Newest results:    roc_auc=0.5382 (+/-0.0825)
 
 show_best(hist, metric = "roc_auc")
-#> # A tibble: 5 x 11
-#>           l1        l2      frob num_comp .metric .estimator  mean     n std_err
-#>        <dbl>     <dbl>     <dbl>    <int> <chr>   <chr>      <dbl> <int>   <dbl>
-#> 1 0.0000796    1.07e-6   2.69e-3        4 roc_auc binary     0.562     4  0.0784
-#> 2 0.00890      1.00e-6   8.31e-4        6 roc_auc binary     0.560     4  0.0850
-#> 3 0.00000590   1.84e-6   9.45e+0        7 roc_auc binary     0.559     4  0.0599
-#> 4 0.0000248    6.69e-6   1.22e-1       17 roc_auc binary     0.558     4  0.0683
-#> 5 0.376        1.59e-2   8.53e-6       13 roc_auc binary     0.558     4  0.0608
+#> # A tibble: 5 × 11
+#>           l1         l2    frob num_comp .metric .estimator  mean     n std_err
+#>        <dbl>      <dbl>   <dbl>    <int> <chr>   <chr>      <dbl> <int>   <dbl>
+#> 1 0.00000617 0.00000188 0.00377        9 roc_auc binary     0.561     4  0.0787
+#> 2 0.0497     0.000154   4.47           9 roc_auc binary     0.560     4  0.0602
+#> 3 0.00564    0.000567   9.93          18 roc_auc binary     0.559     4  0.0599
+#> 4 0.0180     0.0000410  3.70           4 roc_auc binary     0.559     4  0.0606
+#> 5 0.0000248  0.00000669 0.122         17 roc_auc binary     0.558     4  0.0683
 #> # … with 2 more variables: .config <chr>, .iter <int>
 ```
 
@@ -308,13 +316,13 @@ print(model)
 #> <logistic_regression> 
 #> $model
 #> $model$beta
-#>           X1           X2           X3           X4           X5           X6 
-#>  0.321530396  0.414310760 -0.007403158  0.088009349  1.765738321  0.007941341 
-#>           X7           X8           X9          X10 
-#> -0.057536219  0.107952601  0.191754532  0.000000000 
+#>          X1          X2          X3          X4          X5          X6 
+#> -0.11957419  0.51303973 -0.13348002 -0.44564217 -1.14015520  0.10695661 
+#>          X7          X8          X9         X10 
+#>  0.07211584  0.02068296 -0.04030295  0.00000000 
 #> 
 #> $model$intercept
-#> [1] 0.07803997
+#> [1] -0.01230832
 #> 
 #> $model$clusters
 #>  X1  X2  X3  X4  X5  X6  X7  X8  X9 X10 
@@ -334,8 +342,8 @@ print(model)
 #> [1] 1
 #> 
 #> $model$info$history
-#> [1] 2.429158e-01 9.376927e-02 2.219503e-02 6.730942e-03 2.312142e-03
-#> [6] 8.936364e-04 3.478873e-04 1.338193e-04 6.008179e-05
+#> [1] 2.237973e-01 5.495960e-02 8.738682e-03 1.553462e-03 2.813430e-04
+#> [6] 4.522578e-05
 #> 
 #> 
 #> $model$levels
@@ -364,17 +372,39 @@ hist <- tune_grid(model, y~.,
                    grid =10, 
                    control = control_grid(verbose = FALSE)) # 
 show_best(hist, metric = "roc_auc")
-#> # A tibble: 5 x 10
-#>           l1        l2      frob num_comp .metric .estimator  mean     n std_err
-#>        <dbl>     <dbl>     <dbl>    <int> <chr>   <chr>      <dbl> <int>   <dbl>
-#> 1 0.000188   0.0000443   1.09e-6        2 roc_auc binary     0.864     4  0.0185
-#> 2 0.00129    0.0000167   7.15e-6        5 roc_auc binary     0.862     4  0.0183
-#> 3 0.0000837  0.0341      5.07e-5        7 roc_auc binary     0.843     4  0.0214
-#> 4 0.00000367 0.000590    2.86e+0       20 roc_auc binary     0.831     4  0.0388
-#> 5 0.0000138  0.00197     3.46e-1       10 roc_auc binary     0.826     4  0.0368
+#> # A tibble: 5 × 10
+#>           l1         l2     frob num_comp .metric .estimator  mean     n std_err
+#>        <dbl>      <dbl>    <dbl>    <int> <chr>   <chr>      <dbl> <int>   <dbl>
+#> 1 0.000520   0.00841     7.01e-4       17 roc_auc binary     0.865     4  0.0214
+#> 2 0.0161     0.000998    1.84e-4       19 roc_auc binary     0.862     4  0.0237
+#> 3 0.00000192 0.00000327  1.69e-6       10 roc_auc binary     0.860     4  0.0255
+#> 4 0.0000258  0.0312      7.34e-6       12 roc_auc binary     0.859     4  0.0237
+#> 5 0.00795    0.00000599  1.88e-2       15 roc_auc binary     0.833     4  0.0223
 #> # … with 1 more variable: .config <chr>
 ```
 
-## Install in docker
+## Testing with docker and Visual Studio Code
 
-See `inst/rstudio`
+To replicate the environment used in development, you need
+
+1.  [Visual Studio Code](https://code.visualstudio.com/) with the
+    [Remote-Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+    extension.
+2.  [Docker
+    Desktop](https://www.docker.com/products/docker-desktop/alternatives)
+    or just docker and docker-compose.
+
+After installing the requisites above,
+
+1.  Clone this repository
+    `git clone https://https://github.com/jlaria/glasp.git`
+2.  In vscode, go to `File/Open Folder` and open the root folder of this
+    project `glasp`.
+3.  Then, using the Remote-Containers extension, Reopen in Container (or
+    ctrl+p and type `>Remote-Containers:Reopen in Container`)
+4.  Wait for everything to install and then go to
+    `http://localhost:8787` username:rstudio, password:rstudio.
+
+That’s it! You can use an isolated rstudio-server for development.
+
+See `inst/rstudio` for more details about the environment.

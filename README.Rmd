@@ -2,6 +2,10 @@
 output: github_document
 ---
 
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/jlaria/glasp/workflows/R-CMD-check/badge.svg)](https://github.com/jlaria/glasp/actions)
+<!-- badges: end -->
+  
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r setup, include = FALSE}
@@ -152,6 +156,21 @@ hist <- tune_grid(model, y~.,
 show_best(hist, metric = "roc_auc")
 ```
 
-## Install in docker
+## Testing with docker and Visual Studio Code
 
-See `inst/rstudio`
+To replicate the environment used in development, you need 
+
+1. [Visual Studio Code](https://code.visualstudio.com/) with the [Remote-Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension.
+2. [Docker Desktop](https://www.docker.com/products/docker-desktop/alternatives) or just docker and docker-compose.
+
+After installing the requisites above,
+
+1. Clone this repository `git clone https://https://github.com/jlaria/glasp.git`
+2. In vscode, go to `File/Open Folder` and open the root folder of this project `glasp`.
+3. Then, using the Remote-Containers extension, Reopen in Container (or ctrl+p and type `>Remote-Containers:Reopen in Container`)
+4. Wait for everything to install and then go to `http://localhost:8787` username:rstudio, password:rstudio. 
+
+That's it! You can use an isolated rstudio-server for development.
+
+See `inst/rstudio` for more details about the environment.
+

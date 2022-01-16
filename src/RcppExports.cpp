@@ -6,6 +6,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // mean_squared_error
 double mean_squared_error(arma::vec ypred, arma::vec ytrue);
 RcppExport SEXP _glasp_mean_squared_error(SEXP ypredSEXP, SEXP ytrueSEXP) {
