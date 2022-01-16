@@ -152,7 +152,8 @@ simulate_CEN_logistic_data <- function(N = 100, p = 30, p_group = 10, true_p_gro
 
   eta = x %*% beta
   prob = (1+exp(-eta))^-1
-  y = factor((prob > 0.5) + 0)
+  y = rbinom(n = N, size=1, prob = prob)
+  y = factor((y > 0.5) + 0)
   data <- data.frame(y = y, x)
 
   Sigma <- diag(nrow = p, ncol = p)
