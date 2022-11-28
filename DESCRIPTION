@@ -19,13 +19,13 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    hardhat,
-    rlang,
+    hardhat (<= 0.1.6),
+    rlang (<= 1.0.6),
     stats,
     methods,
     Rcpp (>= 1.0.3),
-    parsnip,
-    tibble,
+    parsnip (<= 0.1.7),
+    tibble (<= 3.1.6),
     MASS
 Suggests: 
     recipes,
@@ -36,7 +36,7 @@ Suggests:
     rsample,
     tune,
     yardstick
-LinkingTo: Rcpp, RcppArmadillo
+LinkingTo: Rcpp, RcppArmadillo (<= 0.10.7.5.0)
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Config/testthat/edition: 3
